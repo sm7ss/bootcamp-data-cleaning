@@ -1,0 +1,40 @@
+#Importación de las liberarías necesarias
+import polars as pl
+from typing import Optional
+import logging
+from Validations import ValidacionesDinamicas
+
+#Configuración del logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s-%(levelname)s-%(message)s')
+logger = logging.getLogger(__name__)
+
+#Función para obtener las columnas numéricas y categóricas del DataFrame
+class ColumnAnalyzer: 
+    def __init__(self, df:pl.DataFrame) -> None:
+        self.validaciones = ValidacionesDinamicas(df=df)
+        self.validaciones.dataframe_vacio()
+        self.df = df
+    
+    def columna_categorica(self) -> Optional[pl.DataFrame]: 
+        df_categoria = self.df.select(pl.selectors.string())
+        if not df_categoria.is_empty(): 
+            return df_categoria
+        else: 
+            logger.error(f'El DataFrame no tiene columnas categoricas')
+            raise ValueError(f'El DataFrame no tiene columnas categoricas')
+    
+    def columna_numerica(self) -> Optional[pl.DataFrame]: 
+        df_numerico = self.df.select(pl.selectors.numeric())
+        if not df_numerico.is_empty(): 
+            return df_numerico
+        else: 
+            logger.error(f'El DataFrame no tiene columnas numericas')
+            raise ValueError(f'El DataFrame no tiene columnas numericas')
+    
+    def columna_fecha(self) -> Optional[pl.DataFrame]: 
+        df_fecha = self.df.select(pl.selectors.temporal())
+        if not df_fecha.is_empty(): 
+            return df_fecha
+        else: 
+            logger.error(f'El DataFrame no tiene columnas de fecha')
+            raise ValueError(f'El DataFrame no tiene columnas de fecha')
