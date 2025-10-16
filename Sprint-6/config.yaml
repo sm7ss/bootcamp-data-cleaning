@@ -1,0 +1,34 @@
+Paths: 
+  input_file: '/home/arbolitos7/Documents/ArbolitosMiCasita/TripleTen/Sprint6/ProyectoNoTerminado/games.csv'
+  output_file: 'games_clean_data.parquet'
+
+Cleaning_Rules: 
+  column_rename: {'Name':'name', 'Platform':'platform', 'Year_of_Release':'year_of_release', 'Genre':'genre' , 'NA_sales':'na_sales' , 'EU_sales':'eu_sales' , 'JP_sales':'jp_sales' , 'Other_sales':'other_sales' , 'Critic_Score':'critic_score' , 'User_Score':'user_score' , 'Rating':'rating'}
+  dtype_override: {'year_of_release': 'Int32','na_sales': 'Float32','eu_sales': 'Float32' ,'jp_sales': 'Float32','other_sales': 'Float32','critic_score': 'Float32','user_score': 'Float32'}
+  null_values: 
+    null_val_csv: ['tbd', 'TBD', 'N/A', 'nan']
+    null_imput_num_operation: 'median'
+    null_imput_cat_operation: 'mode'
+
+Feature_Engineer: 
+  sales_column: ['na_sales', 'eu_sales', 'jp_sales', 'other_sales']
+  operation: 'sum'
+
+Analysis_Params: 
+  relevant_year_start: 2012
+  top_platforms_count: 10
+  regions: ['na_sales', 'eu_sales', 'jp_sales']
+  top_regional_count: 5
+  popular_platform_corr: 'PS4'
+
+Hypotesis_Testing: 
+  test_1: 
+    name: 'platform_rating_comprasion'
+    groups: ['XOne', 'PC']
+    metric: 'user_score'
+  test_2: 
+    name: 'genre_rating_comparision'
+    groups: ['Action', 'Sports']
+    metric: 'user_score'
+  test_criteria: 'ttest_ind'
+  alpha: 0.05
