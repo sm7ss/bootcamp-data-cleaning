@@ -1,5 +1,5 @@
 Paths: 
-  input_file: '/home/arbolitos7/Documents/ArbolitosMiCasita/TripleTen/Sprint6/ProyectoNoTerminado/games.csv'
+  input_file: ###
   output_file: 'games_clean_data.parquet'
 
 Cleaning_Rules: 
